@@ -1,0 +1,20 @@
+.button {
+  padding: 10px 20px;
+  border-radius: 5px;
+  width: 120px;
+  border: none;
+  outline: none;
+  background: #ffbb33;
+  cursor: pointer;
+  transition: all 0.3s;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0px 3px 10px rgba(#000, .8);
+  }
+
+  &:active {
+    transform: translateY(-1px);
+    box-shadow: 0px 1px 5px rgba(#000, .8);
+  }
+}
