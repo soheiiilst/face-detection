@@ -47,9 +47,24 @@ class ImageLinkForm extends React.Component {
       this.setState({ imageUrl: this.state.input });
       app.models
         .predict(Clarifai.FACE_DETECT_MODEL, this.state.input)
-        .then(response =>
-          this.displayFaceBox(this.calculateFaceLocation(response))
-        )
+        .then(response => {
+          if (response) {
+            fetch('http://localhost:3001/image', {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                id: this.props.userId
+              }),
+            })
+              .then(response => response.json())
+              .then(rank => {
+                if (rank) {
+                  this.props.loadUserRank(rank);
+                }
+              });
+          }
+          this.displayFaceBox(this.calculateFaceLocation(response));
+        })
         .catch(error => console.log(error));
     }
   };
