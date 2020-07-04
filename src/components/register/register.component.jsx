@@ -23,7 +23,7 @@ class Register extends React.Component {
     event.preventDefault();
 
     try {
-      await fetch('http://localhost:3001/register', {
+      await fetch('https://scenic-dry-tortugas-00988.herokuapp.com/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(this.state),
