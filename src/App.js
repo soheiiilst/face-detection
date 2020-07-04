@@ -10,7 +10,7 @@ import ImageLinkForm from './components/imageLinkForm/imageLinkForm.component';
 const particleOptions = {
   particles: {
     number: {
-      value: 50,
+      value: 60,
       density: {
         enable: true,
         value_area: 800,
@@ -19,21 +19,23 @@ const particleOptions = {
   },
 };
 
+const initialState = {
+  route: 'signin',
+  isSignedIn: false,
+  user: {
+    id: '',
+    name: '',
+    email: '',
+    entries: 0,
+    joined: '',
+  },
+};
+
 class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      route: 'signin',
-      isSignedIn: false,
-      user: {
-        id: '',
-        name: '',
-        email: '',
-        entries: 0,
-        joined: '',
-      },
-    };
+    this.state = initialState;
   }
 
   loadUser = user => {
@@ -56,7 +58,7 @@ class App extends React.Component {
 
   onRouteChange = route => {
     if (route === 'signout') {
-      this.setState({ isSignedIn: false });
+      this.setState(initialState);
     } else if (route === 'home') {
       this.setState({ isSignedIn: true });
     }

@@ -1,13 +1,9 @@
 import React from 'react';
 import './imageLinkForm.styles.scss';
-import Clarifai from 'clarifai';
+
 import Input from '../input/input.component';
 import Button from '../button/button.component';
 import FaceRecognition from '../faceRecognition/faceRecognition.component';
-
-const app = new Clarifai.App({
-  apiKey: 'c8f5f26c14bd4740acc81e74253461c5',
-});
 
 class ImageLinkForm extends React.Component {
   constructor(props) {
@@ -16,25 +12,30 @@ class ImageLinkForm extends React.Component {
     this.state = {
       input: '',
       imageUrl: '',
-      box: {},
+      boxes: [],
     };
   }
 
   calculateFaceLocation = data => {
-    const clarifaiFace =
-      data.outputs[0].data.regions[0].region_info.bounding_box;
+    const clarifaiFace = data.outputs[0].data.regions;
     const image = document.getElementById('inputImage');
     const width = Number(image.width);
     const height = Number(image.height);
-    return {
-      leftCol: clarifaiFace.left_col * width,
-      topRow: clarifaiFace.top_row * height,
-      rightCol: width - clarifaiFace.right_col * width,
-      bottomRow: height - clarifaiFace.bottom_row * height,
-    };
+
+    const faceLocations = clarifaiFace.map(faceLoc => {
+      const { bounding_box } = faceLoc.region_info;
+      return {
+        leftCol: bounding_box.left_col * width,
+        topRow: bounding_box.top_row * height,
+        rightCol: width - bounding_box.right_col * width,
+        bottomRow: height - bounding_box.bottom_row * height,
+      };
+    });
+
+    return faceLocations;
   };
 
-  displayFaceBox = box => this.setState({ box: box });
+  displayFaceBox = boxes => this.setState({ boxes: boxes });
 
   handleChange = event => {
     const { value, name } = event.target;
@@ -45,15 +46,21 @@ class ImageLinkForm extends React.Component {
   onButtonClick = () => {
     if (this.state.input) {
       this.setState({ imageUrl: this.state.input });
-      app.models
-        .predict(Clarifai.FACE_DETECT_MODEL, this.state.input)
+      fetch('http://localhost:3001/imageUrl', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          input: this.state.input,
+        }),
+      })
+        .then(response => response.json())
         .then(response => {
           if (response) {
             fetch('http://localhost:3001/image', {
               method: 'PUT',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
-                id: this.props.userId
+                id: this.props.userId,
               }),
             })
               .then(response => response.json())
@@ -61,16 +68,19 @@ class ImageLinkForm extends React.Component {
                 if (rank) {
                   this.props.loadUserRank(rank);
                 }
-              });
+              })
+              .catch(console.log);
           }
           this.displayFaceBox(this.calculateFaceLocation(response));
         })
         .catch(error => console.log(error));
+    } else {
+      alert('Please enter an image url!');
     }
   };
 
   render() {
-    const { input, imageUrl, box } = this.state;
+    const { input, imageUrl, boxes } = this.state;
     return (
       <div>
         <p className='f3'>
@@ -94,7 +104,7 @@ class ImageLinkForm extends React.Component {
           </div>
         </div>
 
-        <FaceRecognition box={box} imageUrl={imageUrl} />
+        <FaceRecognition boxes={boxes} imageUrl={imageUrl} />
       </div>
     );
   }
