@@ -48,7 +48,7 @@ class Register extends React.Component {
         <main className='pa4 black-80'>
           <form className='measure' onSubmit={this.handleSubmit}>
             <fieldset id='sign_up' className='ba b--transparent ph0 mh0'>
-              <legend className='f2 fw6 ph0 mh0'>Register</legend>
+              <legend className='f2 fw6 ph0 mh0 center'>Register</legend>
               <FormInput
                 label='Name'
                 type='text'

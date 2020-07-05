@@ -48,7 +48,7 @@ class SignIn extends React.Component {
         <main className='pa4 black-80'>
           <form className='measure' onSubmit={this.handleSubmit}>
             <fieldset id='sign_up' className='ba b--transparent ph0 mh0'>
-              <legend className='f2 fw6 ph0 mh0'>Sign In</legend>
+              <legend className='f2 fw6 ph0 mh0 center'>Sign In</legend>
               <FormInput
                 label='Email'
                 type='email'
