@@ -57,5 +57,5 @@ If your run into issues installing the dependencies with NPM, use this command:
 $ sudo npm install --unsafe-perm=true --allow-root
 ```
 
-Once your server has started, go to this url `http://localhost:3000` and you will see the website running on a Development Server:
+Once your server has started, go to this url `http://localhost:3000` .
 
