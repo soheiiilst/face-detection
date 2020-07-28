@@ -3,7 +3,7 @@
 ### Will detect faces in your photos. Give it a try. 
 #### [https://soheiiilst.github.io/face-detection/](https://soheiiilst.github.io/face-detection/)
 <h2 align="center">
-  <a href="http://uupload.ir/" target="_blank"><img src="http://uupload.ir/files/jl20_magic_brain.jpg" border="0" alt="آپلود عکس" /></a>
+  <a href="http://uupload.ir/" target="_blank"><img src="http://uupload.ir/files/jl20_magic_brain.jpg" border="0" alt="face-detection" /></a>
   <br>
 </h2>
 
